@@ -38,14 +38,33 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def find
+    @user = get_user(get_user_params)
+    if @user
+      if @user.password_digest == params[:password]
+        render json: @user
+        
+      end
+    else render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
+    def get_user(par)
+      User.find_by(name: par[:name])
+    end
+
+    def get_user_params
+      params.permit(:name, :email, :password,  :password_confirmation, :favorite)
+    end
+
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :email, :password_digest, :favorite)
+      params.require(:user).permit(:name, :email, :password, :favorite)
     end
 end
