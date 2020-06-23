@@ -21,15 +21,16 @@ Course.create(
     owner: 'RubyonRails@Course',
     starts: 5,
     value: 30,
-    description: 'You will learn everything about Ruby on Rails'
-    image: ''
+    description: 'You will learn everything about Ruby on Rails',
+    image:'https://raw.githubusercontent.com/FelipeEnne/api_find_your_course/development/image/rubyonrails.png',
 )
 
+Course.create(
+    name: 'Ruby',
+    owner: 'Ruby@Course',
+    starts: 4,
+    value: 20,
+    description: 'You will learn everything about Ruby',
+    image:'https://raw.githubusercontent.com/FelipeEnne/api_find_your_course/development/image/ruby.png',
+)
 
-create_table :courses do |t|
-    t.string :name
-    t.string :owner
-    t.integer :starts
-    t.integer :value
-    t.text :description
-    t.string :image
