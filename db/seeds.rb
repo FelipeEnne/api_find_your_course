@@ -14,3 +14,22 @@ User.create(
     password_digest: '123@qwe',
     favorite: '',
 )
+
+
+Course.create(
+    name: 'Ruby on Rails',
+    owner: 'RubyonRails@Course',
+    starts: 5,
+    value: 30,
+    description: 'You will learn everything about Ruby on Rails'
+    image: ''
+)
+
+
+create_table :courses do |t|
+    t.string :name
+    t.string :owner
+    t.integer :starts
+    t.integer :value
+    t.text :description
+    t.string :image
