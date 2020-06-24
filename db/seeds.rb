@@ -58,7 +58,7 @@ Course.create(
     starts: 4,
     value: 40,
     description: 'You will learn everything about React',
-    image:'https://raw.githubusercontent.com/FelipeEnne/api_find_your_course/development/image/React.png',
+    image:'https://raw.githubusercontent.com/FelipeEnne/api_find_your_course/development/image/react.png',
 )
 
 
