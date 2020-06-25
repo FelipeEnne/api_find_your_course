@@ -25,13 +25,24 @@ class UsersController < ApplicationController
   end
 
   # PATCH/PUT /users/1
+  # def updateFavorite
+  #   @user = get_user(get_user_params)
+  #   if @user.update(user_params_favorite)
+  #     render json: @user
+  #   else
+  #     render json: @user.errors, status: :unprocessable_entity
+  #   end
+  # end
+
   def update
-    if @user.update(user_params)
+    if @user.update(user_params_favorite)
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
   end
+
+  
 
   # DELETE /users/1
   def destroy
@@ -57,6 +68,10 @@ class UsersController < ApplicationController
 
     def get_user(par)
       User.find_by(name: par[:name])
+    end
+
+    def user_params_favorite
+      params.permit(:favorite)
     end
 
     def get_user_params

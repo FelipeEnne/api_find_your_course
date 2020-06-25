@@ -17,7 +17,7 @@ User.create(
 
 
 Course.create(
-    name: 'Ruby on Rails',
+    name: 'RubyonRails',
     owner: 'RubyonRails@Course',
     starts: 5,
     value: 40,
@@ -35,7 +35,7 @@ Course.create(
 )
 
 Course.create(
-    name: 'HTML & CSS',
+    name: 'HTML&CSS',
     owner: 'HTMLCSS@Course',
     starts: 4,
     value: 20,
