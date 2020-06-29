@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: %i[show, update, destroy]
 
   # GET /users
   def index
@@ -49,15 +49,14 @@ class UsersController < ApplicationController
 
   def find
     @user = get_user(cget_user_params)
-    if @user
-      if @user.password_digest == params[:password]
-        render json: @user
-      end
+    if @user && @user.password_digest == params[:password]
+      render json: @user
     else render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])
