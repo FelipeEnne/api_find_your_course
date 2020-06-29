@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: %i[:show, :update, :destroy]
+  before_action :set_course, only: %i[show, update, destroy]
 
   # GET /courses
   def index
@@ -43,8 +43,8 @@ class CoursesController < ApplicationController
   def set_course
     @course = Course.find(params[:id])
   end
-  
-    # Only allow a trusted parameter "white list" through.
+
+  # Only allow a trusted parameter "white list" through.
   def course_params
     params.require(:course).permit(:name, :owner, :starts, :value, :description, :image)
   end

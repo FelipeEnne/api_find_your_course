@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def home
-      render json: 'Home'
+    render json: 'Home'
   end
 end

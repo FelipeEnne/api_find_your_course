@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   end
 
   def find
-    @user = get_user(get_user_params)
+    @user = get_user(cget_user_params)
     if @user
       if @user.password_digest == params[:password]
         render json: @user
@@ -58,7 +58,6 @@ class UsersController < ApplicationController
   end
 
   private
-  
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])
@@ -72,10 +71,11 @@ class UsersController < ApplicationController
     params.permit(:favorite)
   end
 
-  def get_user_params
+  def cget_user_params
     params.permit(:name, :email, :password_digest, :favorite)
   end
- # Only allow a trusted parameter "white list" through.
+
+  # Only allow a trusted parameter "white list" through.
   def user_params
     params.require(:user).permit(:name, :email, :password, :favorite)
   end
