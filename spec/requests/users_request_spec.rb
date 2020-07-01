@@ -45,7 +45,7 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'GET /login errors name' do
-    before { get '/login', params: { name: "123", password: user.password_digest } }
+    before { get '/login', params: { name: '123', password: user.password_digest } }
 
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
