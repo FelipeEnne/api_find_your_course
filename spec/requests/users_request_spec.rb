@@ -40,31 +40,31 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'HTTP response 200' do
-      expect(response).to have_http_status(200)   
+      expect(response).to have_http_status(200)
     end
   end
 
   describe 'GET /login errors name' do
-    before { get '/login', params: {name: "123", password: user.password_digest } }
+    before { get '/login', params: { name: "123", password: user.password_digest } }
 
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
     end
 
     it 'HTTP response 422' do
-      expect(response).to have_http_status(422)   
+      expect(response).to have_http_status(422)
     end
   end
 
   describe 'GET /login errors password' do
-    before { get '/login', params: {name: user.name, password: '123'} }
+    before { get '/login', params: { name: user.name, password: '123' } }
 
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
     end
 
     it 'HTTP response 422' do
-      expect(response).to have_http_status(422)   
+      expect(response).to have_http_status(422)
     end
   end
 
@@ -80,17 +80,17 @@ RSpec.describe 'Users', type: :request do
 
     before { post '/users', params: attributes }
 
-      it 'creates a user' do
-        expect(JSON.parse(response.body)['name']).to eq('name1')
-      end
+    it 'creates a user' do
+      expect(JSON.parse(response.body)['name']).to eq('name1')
+    end
 
-      it 'returns status code 201' do
-        expect(response).to have_http_status(201)
-      end
+    it 'returns status code 201' do
+      expect(response).to have_http_status(201)
+    end
   end
 
   describe 'PATCH /users' do
-    before { patch '/users/0', params: {id: 0, favorite: 'Ruby' } }
+    before { patch '/users/0', params: { id: 0, favorite: 'Ruby' } }
 
     it 'returns' do
       expect(JSON.parse(response.body)['favorite']).to eq('Ruby')

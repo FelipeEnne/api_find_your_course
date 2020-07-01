@@ -12,14 +12,16 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create course' do
     assert_difference('Course.count') do
-      post courses_url, params: { course: { 
-                                            description: @course.description,
-                                            image: @course.image,
-                                            name: @course.name,
-                                            owner: @course.owner,
-                                            starts:@course.starts,
-                                            value: @course.value 
-                                          } }, as: :json
+      post courses_url, params: { course:
+                                  {
+                                    description: @course.description,
+                                    image: @course.image,
+                                    name: @course.name,
+                                    owner: @course.owner,
+                                    starts:@course.starts,
+                                    value: @course.value,
+                                  } 
+                                }, as: :json
     end
 
     assert_response 201
@@ -31,7 +33,16 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update course' do
-    patch course_url(@course), params: { course: { description: @course.description, image: @course.image, name: @course.name, owner: @course.owner, starts: @course.starts, value: @course.value } }, as: :json
+    patch course_url(@course), params: { course:
+                                          {
+                                            description: @course.description,
+                                            image: @course.image,
+                                            name: @course.name,
+                                            owner: @course.owner,
+                                            starts: @course.starts,
+                                            value: @course.value,
+                                          }
+                                        }, as: :json
     assert_response 200
   end
 
