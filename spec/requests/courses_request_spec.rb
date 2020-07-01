@@ -1,21 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "Courses", type: :request do
+RSpec.describe 'Courses', type: :request do
   let!(:course) { create(:course) }
-
 
   it 'Test create' do
     expect(course.id).to eq(0)
-    expect(course.name).to eq("RubyonRails")
+    expect(course.name).to eq('RubyonRails')
   end
 
   describe 'GET /courses' do
     before { get '/courses' }
 
     it 'return json' do
-      expect( JSON.parse(response.body).length).to eq(1)
+      expect(JSON.parse(response.body).length).to eq(1)
     end
-  
+
     it 'HTTP response 200' do
       expect(response).to have_http_status(200)
     end
@@ -46,14 +45,12 @@ RSpec.describe "Courses", type: :request do
     end
 
     before { post '/courses', params: attributes }
+    it 'creates a user' do
+      expect(JSON.parse(response.body)['name']).to eq('Ruby')
+    end
 
-      it 'creates a user' do
-        expect(JSON.parse(response.body)['name']).to eq("Ruby")
-      end
-
-      it 'returns status code 201' do
-        expect(response).to have_http_status(201)
-      end
+    it 'returns status code 201' do
+      expect(response).to have_http_status(201)
+    end
   end
-  
 end

@@ -5,22 +5,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get users_url, as: :json
     assert_response :success
   end
 
-  test "should show user" do
+  test 'should show user' do
     get user_url(@user), as: :json
     assert_response :success
   end
 
-  test "should update user" do
+  test 'should update user' do
     patch user_url(@user), params: { user: { email: @user.email, favorite: @user.favorite, name: @user.name, password_digest: @user.password_digest } }, as: :json
     assert_response 422
   end
 
-  test "should destroy user" do
+  test 'should destroy user' do
     assert_difference('User.count', -1) do
       delete user_url(@user), as: :json
     end

@@ -1,22 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "Users", type: :request do
+RSpec.describe 'Users', type: :request do
   let!(:user) { create(:user) }
-
 
   it 'Test create' do
     expect(user.id).to eq(0)
-    expect(user.name).to eq("name")
+    expect(user.name).to eq('name')
   end
-
 
   describe 'GET /users' do
     before { get '/users' }
 
     it 'return json' do
-      expect( JSON.parse(response.body).length).to eq(1)
+      expect(JSON.parse(response.body).length).to eq(1)
     end
-  
+
     it 'HTTP response 200' do
       expect(response).to have_http_status(200)
     end
@@ -35,8 +33,8 @@ RSpec.describe "Users", type: :request do
   end
 
   describe 'GET /login' do
-    before { get '/login', params: {name: user.name, password: user.password_digest } }
-    
+    before { get '/login', params: { name: user.name, password: user.password_digest } }
+
     it 'return name' do
       expect(JSON.parse(response.body)['id']).to eq(user.id)
     end
@@ -48,7 +46,7 @@ RSpec.describe "Users", type: :request do
 
   describe 'GET /login errors name' do
     before { get '/login', params: {name: "123", password: user.password_digest } }
-    
+
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
     end
@@ -59,8 +57,8 @@ RSpec.describe "Users", type: :request do
   end
 
   describe 'GET /login errors password' do
-    before { get '/login', params: {name: user.name, password: "123"} }
-    
+    before { get '/login', params: {name: user.name, password: '123'} }
+
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
     end
@@ -83,7 +81,7 @@ RSpec.describe "Users", type: :request do
     before { post '/users', params: attributes }
 
       it 'creates a user' do
-        expect(JSON.parse(response.body)['name']).to eq("name1")
+        expect(JSON.parse(response.body)['name']).to eq('name1')
       end
 
       it 'returns status code 201' do
@@ -102,5 +100,4 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(200)
     end
   end
-
 end

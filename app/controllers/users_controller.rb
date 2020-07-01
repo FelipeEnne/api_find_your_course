@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     @user = get_user(cget_user_params)
     if @user && @user.password_digest == params[:password]
       render json: @user
-    else 
+    else
       render json: false, status: :unprocessable_entity
     end
   end
