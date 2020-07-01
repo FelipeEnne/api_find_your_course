@@ -10,40 +10,9 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should create course' do
-    assert_difference('Course.count') do
-      post courses_url, params: { course:
-                                  {
-                                    description: @course.description,
-                                    image: @course.image,
-                                    name: @course.name,
-                                    owner: @course.owner,
-                                    starts: @course.starts,
-                                    value: @course.value
-                                  }
-                                }, as: :json
-    end
-
-    assert_response 201
-  end
-
   test 'should show course' do
     get course_url(@course), as: :json
     assert_response :success
-  end
-
-  test 'should update course' do
-    patch course_url(@course), params: { course:
-                                          {
-                                            description: @course.description,
-                                            image: @course.image,
-                                            name: @course.name,
-                                            owner: @course.owner,
-                                            starts: @course.starts,
-                                            value: @course.value
-                                          }
-                                        }, as: :json
-    assert_response 200
   end
 
   test 'should destroy course' do
