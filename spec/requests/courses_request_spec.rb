@@ -40,7 +40,7 @@ RSpec.describe 'Courses', type: :request do
         starts: 4,
         value: 20,
         description: 'You will learn everything about Ruby',
-        image:'image'
+        image: 'image'
       }
     end
 

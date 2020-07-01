@@ -18,9 +18,9 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
                                     image: @course.image,
                                     name: @course.name,
                                     owner: @course.owner,
-                                    starts:@course.starts,
-                                    value: @course.value,
-                                  } 
+                                    starts: @course.starts,
+                                    value: @course.value
+                                  }
                                 }, as: :json
     end
 
@@ -40,7 +40,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
                                             name: @course.name,
                                             owner: @course.owner,
                                             starts: @course.starts,
-                                            value: @course.value,
+                                            value: @course.value
                                           }
                                         }, as: :json
     assert_response 200
