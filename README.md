@@ -43,6 +43,36 @@ The API was used to handle the project data.
 * description
 * image
 
+The API has the following endpoints
+
+`POST /login`
+
+allow user login
+
+`POST /users`
+
+allows user signup
+
+`GET /users`
+
+returns all users information
+
+`GET /users/id`
+
+returns the user information
+
+`POST /users/id`
+
+allows user to edit the favorite
+
+`GET /courses`
+
+returns all courses
+
+`GET /courses/id`
+
+returns a specific courses
+
 
 ### Live version
 
