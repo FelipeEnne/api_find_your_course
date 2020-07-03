@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(cget_user_params)
+    @user = User.create(cuser_params)
 
     if @user.save
       render json: @user, status: :created
@@ -34,8 +34,9 @@ class UsersController < ApplicationController
   end
 
   def find
-    @user = get_user(cget_user_params)
-    if @user && @user.password_digest == params[:password]
+    @user = get_user(cuser_params)
+    p @user
+    if @user && @user.authenticate(params[:password])
       render json: @user
     else
       render json: false, status: :unprocessable_entity
@@ -58,6 +59,10 @@ class UsersController < ApplicationController
 
   def cget_user_params
     params.permit(:name, :email, :password_digest, :favorite)
+  end
+
+  def cuser_params
+    params.permit(:name, :email, :password, :password_confirmation)
   end
 
   def user_params

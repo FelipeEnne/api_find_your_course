@@ -11,7 +11,8 @@
 User.create(
     name: 'name',
     email: 'email@gmail.com',
-    password_digest: '123@qwe',
+    password: '123@qwe',
+    password_confirmation: '123@qwe',
     favorite: '',
 )
 
