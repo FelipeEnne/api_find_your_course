@@ -32,8 +32,14 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
+  describe 'GET /users/:id error - id' do
+    it 'returns the user' do
+      expect{get '/users/1'}.to raise_exception(ActiveRecord::RecordNotFound)
+    end
+  end
+
   describe 'GET /login' do
-    before { get '/login', params: { name: user.name, password: user.password_digest } }
+    before { get '/login', params: { name: user.name, password: user.password } }
 
     it 'return name' do
       expect(JSON.parse(response.body)['id']).to eq(user.id)
@@ -44,7 +50,7 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  describe 'GET /login errors name' do
+  describe 'GET /login - error name' do
     before { get '/login', params: { name: '123', password: user.password_digest } }
 
     it 'return false' do
@@ -56,7 +62,7 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  describe 'GET /login errors password' do
+  describe 'GET /login - error password' do
     before { get '/login', params: { name: user.name, password: '123' } }
 
     it 'return false' do
@@ -73,7 +79,8 @@ RSpec.describe 'Users', type: :request do
       {
         name: 'name1',
         email: 'name1@email.com',
-        password_digest: 'name@123',
+        password: 'name@123',
+        password_confirmation: 'name@123',
         favorite: ''
       }
     end
@@ -89,6 +96,49 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
+  describe 'POST /users -  no name' do
+    let(:attributes) do
+      {
+        email: 'name1@email.com',
+        password: 'name@123',
+        password_confirmation: 'name@123',
+        favorite: ''
+      }
+    end
+
+    before { post '/users', params: attributes }
+
+    it 'returns status code 422' do
+      expect(response).to have_http_status(422)
+    end
+
+    it 'returns a validation failure message' do
+      expect(response.body).to eq("false")
+    end
+  end
+
+  describe 'POST /users -  different password' do
+    let(:attributes) do
+      {
+        name: 'name1',
+        email: 'name1@email.com',
+        password: 'name@123',
+        password_confirmation: 'name@1234',
+        favorite: ''
+      }
+    end
+
+    before { post '/users', params: attributes }
+
+    it 'returns status code 422' do
+      expect(response).to have_http_status(422)
+    end
+
+    it 'returns a validation failure message' do
+      expect(response.body).to eq("false")
+    end
+  end
+
   describe 'PATCH /users' do
     before { patch '/users/0', params: { id: 0, favorite: 'Ruby' } }
 
@@ -98,6 +148,14 @@ RSpec.describe 'Users', type: :request do
 
     it 'returns status code ' do
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe 'DELETE /users' do
+    before { delete '/users/0' }
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
     end
   end
 end

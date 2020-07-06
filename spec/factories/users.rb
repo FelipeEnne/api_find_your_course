@@ -3,7 +3,8 @@ FactoryBot.define do
     id { 0 }
     name { 'name' }
     email { 'name@email.com' }
-    password_digest { '123@qwe' }
+    password { '123@qwe' }
+    password_confirmation { '123@qwe' }
     favorite { '' }
   end
 end
