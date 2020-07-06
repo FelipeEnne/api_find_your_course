@@ -34,10 +34,9 @@ RSpec.describe 'Courses', type: :request do
 
   describe 'GET /courses/:id error - id' do
     it 'returns the courses' do
-      expect{get '/courses/40'}.to raise_exception(ActiveRecord::RecordNotFound)
+      expect{ get '/courses/40' }.to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
-
 
   describe 'POST /courses' do
     let(:attributes) do
@@ -77,7 +76,7 @@ RSpec.describe 'Courses', type: :request do
       expect(response).to have_http_status(422)
     end
     it 'returns a validation failure message' do
-      expect(response.body).to eq("false")
+      expect(response.body).to eq('false')
     end
   end
 

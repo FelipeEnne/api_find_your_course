@@ -35,11 +35,12 @@ class UsersController < ApplicationController
 
   def find
     @user = get_user(cuser_params)
-    p @user
-    if @user && @user.authenticate(params[:password])
-      render json: @user
-    else
-      render json: false, status: :unprocessable_entity
+    if @user
+      if @user.authenticate(params[:password])
+        render json: @user
+      else
+        render json: false, status: :unprocessable_entity
+      end
     end
   end
 

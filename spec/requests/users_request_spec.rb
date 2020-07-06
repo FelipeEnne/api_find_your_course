@@ -34,7 +34,7 @@ RSpec.describe 'Users', type: :request do
 
   describe 'GET /users/:id error - id' do
     it 'returns the user' do
-      expect{get '/users/1'}.to raise_exception(ActiveRecord::RecordNotFound)
+      expect{ get '/users/1'}.to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -54,11 +54,11 @@ RSpec.describe 'Users', type: :request do
     before { get '/login', params: { name: '123', password: user.password_digest } }
 
     it 'return false' do
-      expect(JSON.parse(response.body)).to eq(false)
+      expect(response.sending?).to eq(false)
     end
 
-    it 'HTTP response 422' do
-      expect(response).to have_http_status(422)
+    it 'HTTP response 204' do
+      expect(response).to have_http_status(204)
     end
   end
 
@@ -113,7 +113,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'returns a validation failure message' do
-      expect(response.body).to eq("false")
+      expect(response.body).to eq('false')
     end
   end
 
@@ -135,7 +135,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'returns a validation failure message' do
-      expect(response.body).to eq("false")
+      expect(response.body).to eq('false')
     end
   end
 
