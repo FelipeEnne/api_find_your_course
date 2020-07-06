@@ -42,7 +42,6 @@ class UsersController < ApplicationController
     else
       render json: false, status: :unprocessable_entity
     end
-
   end
 
   private
