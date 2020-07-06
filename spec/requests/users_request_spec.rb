@@ -34,7 +34,7 @@ RSpec.describe 'Users', type: :request do
 
   describe 'GET /users/:id error - id' do
     it 'returns the user' do
-      expect{ get '/users/1'}.to raise_exception(ActiveRecord::RecordNotFound)
+      expect { get '/users/1' }.to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 
