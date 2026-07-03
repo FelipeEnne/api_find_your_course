@@ -31,6 +31,7 @@ class CoursesController < ApplicationController
 
   def destroy
     @course.destroy
+    head :no_content
   end
 
   private

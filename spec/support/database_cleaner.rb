@@ -1,21 +1,20 @@
 RSpec.configure do |config|
   config.before(:suite) do
+    if ENV['DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL'] == 'true' || ENV['DATABASE_URL']
+      DatabaseCleaner.allow_remote_database_url = true
+    end
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after do
     DatabaseCleaner.clean
   end
 end

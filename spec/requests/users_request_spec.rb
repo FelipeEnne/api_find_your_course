@@ -3,11 +3,6 @@ require 'rails_helper'
 RSpec.describe 'Users', type: :request do
   let!(:user) { create(:user) }
 
-  it 'Test create' do
-    expect(user.id).to eq(0)
-    expect(user.name).to eq('name')
-  end
-
   describe 'GET /users' do
     before { get '/users' }
 
@@ -21,28 +16,38 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'GET /users/:id' do
-    before { get '/users/0' }
+    before { get "/users/#{user.id}" }
+
     it 'returns the user' do
       expect(JSON.parse(response.body)).not_to be_empty
-      expect(JSON.parse(response.body)['id']).to eq(0)
+      expect(JSON.parse(response.body)['id']).to eq(user.id)
       expect(JSON.parse(response.body)['name']).to eq(user.name)
     end
+
     it 'HTTP response 200' do
       expect(response).to have_http_status(200)
+    end
+
+    it 'does not expose password_digest' do
+      expect(JSON.parse(response.body)).not_to have_key('password_digest')
     end
   end
 
   describe 'GET /users/:id error - id' do
-    it 'returns the user' do
-      expect { get '/users/1' }.to raise_exception(ActiveRecord::RecordNotFound)
+    before { get '/users/99999' }
+
+    it 'returns not found' do
+      expect(response).to have_http_status(404)
     end
   end
 
-  describe 'GET /login' do
-    before { get '/login', params: { name: user.name, password: user.password } }
+  describe 'POST /login' do
+    before { post '/login', params: { name: user.name, password: user.password } }
 
-    it 'return name' do
-      expect(JSON.parse(response.body)['id']).to eq(user.id)
+    it 'returns token and user' do
+      body = JSON.parse(response.body)
+      expect(body['token']).to be_present
+      expect(body['user']['id']).to eq(user.id)
     end
 
     it 'HTTP response 200' do
@@ -50,20 +55,20 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  describe 'GET /login - error name' do
-    before { get '/login', params: { name: '123', password: user.password_digest } }
+  describe 'POST /login - error name' do
+    before { post '/login', params: { name: '123', password: '123@qwe' } }
 
-    it 'return false' do
-      expect(response.sending?).to eq(false)
+    it 'returns not found' do
+      expect(JSON.parse(response.body)['error']).to eq('User not found')
     end
 
-    it 'HTTP response 204' do
-      expect(response).to have_http_status(204)
+    it 'HTTP response 404' do
+      expect(response).to have_http_status(404)
     end
   end
 
-  describe 'GET /login - error password' do
-    before { get '/login', params: { name: user.name, password: '123' } }
+  describe 'POST /login - error password' do
+    before { post '/login', params: { name: user.name, password: '123' } }
 
     it 'return false' do
       expect(JSON.parse(response.body)).to eq(false)
@@ -140,19 +145,27 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'PATCH /users' do
-    before { patch '/users/0', params: { id: 0, favorite: 'Ruby' } }
+    before { patch "/users/#{user.id}", params: { favorite: 'Ruby' }, headers: auth_headers(user) }
 
     it 'returns' do
       expect(JSON.parse(response.body)['favorite']).to eq('Ruby')
     end
 
-    it 'returns status code ' do
+    it 'returns status code 200' do
       expect(response).to have_http_status(200)
     end
   end
 
+  describe 'PATCH /users without auth' do
+    before { patch "/users/#{user.id}", params: { favorite: 'Ruby' } }
+
+    it 'returns unauthorized' do
+      expect(response).to have_http_status(401)
+    end
+  end
+
   describe 'DELETE /users' do
-    before { delete '/users/0' }
+    before { delete "/users/#{user.id}", headers: auth_headers(user) }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

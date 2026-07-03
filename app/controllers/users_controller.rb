@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authorize_request, only: %i[create find]
+
   before_action :set_user, only: %i[show update destroy]
 
   def index
@@ -12,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(cuser_params)
+    @user = User.new(cuser_params)
 
     if @user.save
       render json: @user, status: :created
@@ -31,14 +33,20 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+    head :no_content
   end
 
   def find
     @user = get_user(cuser_params)
-    return unless @user
+
+    unless @user
+      render json: { error: 'User not found' }, status: :not_found
+      return
+    end
 
     if @user.authenticate(params[:password])
-      render json: @user
+      token = JsonWebToken.encode(user_id: @user.id)
+      render json: { token: token, user: @user }
     else
       render json: false, status: :unprocessable_entity
     end
@@ -58,15 +66,7 @@ class UsersController < ApplicationController
     params.permit(:favorite)
   end
 
-  def cget_user_params
-    params.permit(:name, :email, :password_digest, :favorite)
-  end
-
   def cuser_params
     params.permit(:name, :email, :password, :password_confirmation, :favorite)
-  end
-
-  def user_params
-    params.require(:user).permit(:name, :email, :password_digest, :favorite)
   end
 end

@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, development]
+  pull_request:
+    branches: [main, master, development]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/api_find_your_course_test
+      SECRET_KEY_BASE: test_secret_key_base_for_ci_only_0123456789abcdef
+      CORS_ORIGINS: http://localhost:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.11'
+          bundler-cache: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: npm audit
+        run: npm audit --audit-level=high
+
+      - name: bundle audit
+        run: bundle exec bundler-audit check --update
+
+      - name: Prepare database
+        run: bundle exec rails db:create db:schema:load
+        env:
+          DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
+
+      - name: Run RSpec
+        run: bundle exec rspec
+        env:
+          DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'

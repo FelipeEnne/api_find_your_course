@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :course do
-    id { 0 }
     name { 'RubyonRails' }
     owner { 'RubyonRails@Course' }
     starts { 5 }
