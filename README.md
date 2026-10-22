@@ -4,10 +4,12 @@
 
   - [About](#about)
   - [The back-end API](#the-back-end-api)
+  - [Architecture](ARCHITECTURE.md)
   - [Technologies used](#technologies-used)
   - [Local usage](#local-usage)
   - [Environment variables](#environment-variables)
   - [Testing](#testing)
+  - [Security](#security)
   - [Contact](#contact)
   - [Acknowledgments](#acknowledgments)
   - [Show your support](#show-your-support)
@@ -25,6 +27,10 @@ The front-end repository can be found <a href="https://github.com/FelipeEnne/fin
 ## The back-end API
 
 The API handles project data for users and courses.
+
+## Architecture
+
+The API uses Rails in API-only mode, PostgreSQL for persistence, and JWT for protected operations. Requests flow through Rails routes and controllers, with domain validation in the `User` and `Course` models. See [ARCHITECTURE.md](ARCHITECTURE.md) for the component diagram, data model, endpoint access rules, and configuration details.
 
 ### Data in the users table
 
@@ -159,6 +165,10 @@ bundle exec rspec
 bundle exec bundler-audit check
 npm audit
 ```
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for authentication rules, secret configuration, and dependency audit guidance.
 
 ## Contact
 
