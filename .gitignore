@@ -22,3 +22,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 node_modules
+
+# Keep local ai-jail policy and installed Ruby gems out of Git.
+.ai-jail
+/vendor/bundle
