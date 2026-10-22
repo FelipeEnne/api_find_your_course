@@ -8,11 +8,11 @@
 
 
 
-User.create(
+User.create!(
     name: 'name',
     email: 'email@gmail.com',
-    password: '123@qwe',
-    password_confirmation: '123@qwe',
+    password: ENV.fetch('SEED_USER_PASSWORD'),
+    password_confirmation: ENV.fetch('SEED_USER_PASSWORD'),
     favorite: '',
 )
 

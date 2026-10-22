@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
+  before_action :authorize_request, only: %i[index show]
   skip_before_action :authorize_request, only: %i[create find]
 
   before_action :set_user, only: %i[show update destroy]
 
   def index
-    @users = User.all
+    @users = [current_user]
 
     render json: @users
   end
@@ -39,16 +40,11 @@ class UsersController < ApplicationController
   def find
     @user = get_user(cuser_params)
 
-    unless @user
-      render json: { error: 'User not found' }, status: :not_found
-      return
-    end
-
-    if @user.authenticate(params[:password])
+    if @user&.authenticate(params[:password])
       token = JsonWebToken.encode(user_id: @user.id)
       render json: { token: token, user: @user }
     else
-      render json: false, status: :unprocessable_entity
+      render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
   end
 
@@ -56,6 +52,7 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+    head :forbidden unless @user == current_user
   end
 
   def get_user(par)

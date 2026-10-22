@@ -9,7 +9,7 @@ module Authenticable
 
   def authorize_request
     header = request.headers['Authorization']
-    token = header.split.last if header&.start_with?('Bearer ')
+    token = header.delete_prefix('Bearer ').presence if header&.start_with?('Bearer ')
     decoded = JsonWebToken.decode(token)
 
     unless decoded && (@current_user = User.find_by(id: decoded[:user_id]))

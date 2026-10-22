@@ -50,7 +50,7 @@ Protected endpoints require a JWT token obtained from login:
 Authorization: Bearer <token>
 ```
 
-`POST`, `PATCH`, and `DELETE` on `/users` and `/courses` require authentication. `GET` endpoints and user signup remain public.
+`POST`, `PATCH`, and `DELETE` on `/users` and `/courses` require authentication. User reads also require a token and return only the authenticated user's data. Course reads and user signup remain public.
 
 ### Endpoints
 
@@ -58,8 +58,8 @@ Authorization: Bearer <token>
 |--------|------|------|-------------|
 | `POST` | `/login` | No | Authenticate user. Returns `{ token, user }` |
 | `POST` | `/users` | No | User signup |
-| `GET` | `/users` | No | List all users |
-| `GET` | `/users/:id` | No | Get user by id |
+| `GET` | `/users` | Yes | Get the authenticated user's record |
+| `GET` | `/users/:id` | Yes | Get the authenticated user's record |
 | `PATCH` | `/users/:id` | Yes | Update user favorite |
 | `DELETE` | `/users/:id` | Yes | Delete user |
 | `GET` | `/courses` | No | List all courses |
@@ -150,6 +150,7 @@ The API runs at `http://localhost:3000`.
 | `API_FIND_YOUR_COURSE_DATABASE_PASSWORD` | Production | PostgreSQL password |
 | `DATABASE_URL` | Heroku/CI | Full database connection URL |
 | `PGPASSWORD` | Local (Windows) | PostgreSQL password for local development |
+| `SEED_USER_PASSWORD` | When seeding | Password for the sample user created by `db:seed` |
 
 ## Testing
 
