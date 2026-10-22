@@ -109,7 +109,7 @@ You can find it <a href="https://protected-beyond-23220.herokuapp.com/"> here</a
 
 ### Prerequisites
 
-* Ruby 3.3.11
+* Ruby 3.4.9
 * PostgreSQL
 * Bundler
 

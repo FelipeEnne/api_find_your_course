@@ -4,7 +4,7 @@ RSpec.describe 'Users', type: :request do
   let!(:user) { create(:user) }
 
   describe 'GET /users' do
-    before { get '/users' }
+    before { get '/users', headers: auth_headers(user) }
 
     it 'return json' do
       expect(JSON.parse(response.body).length).to eq(1)
@@ -16,7 +16,7 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'GET /users/:id' do
-    before { get "/users/#{user.id}" }
+    before { get "/users/#{user.id}", headers: auth_headers(user) }
 
     it 'returns the user' do
       expect(JSON.parse(response.body)).not_to be_empty
@@ -58,12 +58,12 @@ RSpec.describe 'Users', type: :request do
   describe 'POST /login - error name' do
     before { post '/login', params: { name: '123', password: '123@qwe' } }
 
-    it 'returns not found' do
-      expect(JSON.parse(response.body)['error']).to eq('User not found')
+    it 'returns an invalid credentials error' do
+      expect(JSON.parse(response.body)['error']).to eq('Invalid credentials')
     end
 
-    it 'HTTP response 404' do
-      expect(response).to have_http_status(404)
+    it 'HTTP response 401' do
+      expect(response).to have_http_status(401)
     end
   end
 
@@ -74,8 +74,8 @@ RSpec.describe 'Users', type: :request do
       expect(JSON.parse(response.body)).to eq(false)
     end
 
-    it 'HTTP response 422' do
-      expect(response).to have_http_status(422)
+    it 'HTTP response 401' do
+      expect(response).to have_http_status(401)
     end
   end
 
