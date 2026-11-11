@@ -22,6 +22,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 node_modules
+.env
+.playdata-environment
 
 # Keep local ai-jail policy and installed Ruby gems out of Git.
 .ai-jail
